@@ -112,6 +112,7 @@ class Controller extends ChangeNotifier {
   void getCharacteristic() async {
     status = Status.loading;
     try {
+      // calling an api
       await Future.delayed(Duration(seconds: 5));
       characteres.addAll(['1', '2', '2']);
       status = Status.loaded;
