@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -64,10 +64,7 @@ class HomeScreen extends StatelessWidget {
                   case Status.loading:
                     return const CircularProgressIndicator();
                   case Status.loaded:
-                    return Column(
-                      children:
-                          controller.characteres.map((e) => Text(e)).toList(),
-                    );
+                    return Text(controller.data);
 
                   case Status.error:
                     return const Text('Ah pasado un error');
@@ -109,12 +106,16 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  final Dio _dio = Dio();
+  String data = '';
+
   void getCharacteristic() async {
     status = Status.loading;
     try {
-      // calling an api
-      await Future.delayed(Duration(seconds: 5));
-      characteres.addAll(['1', '2', '2']);
+      final Response response =
+          await _dio.get('https://restcountries.com/v3.1/all');
+      data = response.data.toString();
+      print(response.data.toString());
       status = Status.loaded;
     } catch (e) {
       status = Status.error;
