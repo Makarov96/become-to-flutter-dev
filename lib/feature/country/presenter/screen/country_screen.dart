@@ -41,9 +41,7 @@ class FloatingActionButtonRef extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
-      onPressed: () {
-        ref.read<Controller>(controllerProvider).update();
-      },
+      onPressed: () => ref.read<Controller>(controllerProvider).update(),
     );
   }
 }
