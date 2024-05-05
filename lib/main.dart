@@ -60,7 +60,7 @@ class Controller extends ChangeNotifier {
       final Response response =
           await _dio.get('https://restcountries.com/v3.1/all');
       data = response.data.toString();
-      print(response.data.toString());
+
       status = Status.loaded;
     } catch (e) {
       status = Status.error;
