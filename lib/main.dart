@@ -1,9 +1,10 @@
-import 'dart:async';
+import 'package:become_to_flutter_dev/feature/country/presenter/screen/country_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-void main() => runApp(const MyApp());
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+void main() => runApp(const ProviderScope(child: MyApp()));
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -15,71 +16,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Material App',
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (_) => Controller()..getCharacteristic(),
-          ),
-        ],
-        child: HomeScreen(),
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final Controller controller = Controller();
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Material App Bar'),
-      ),
-      drawer: const Drawer(),
-      body: Center(
-        child: Column(
-          children: [
-            ListenableBuilder(
-              listenable: controller,
-              builder: (context, widget) {
-                return Text('${controller.counter}');
-              },
-            ),
-            Consumer<Controller>(
-              builder: (context, controller, widget) {
-                return Text('${controller.counter}');
-              },
-            ),
-            Consumer<Controller>(
-              builder: (context, controller, widget) {
-                switch (controller.status) {
-                  case Status.init:
-                    return const CircularProgressIndicator();
-                  case Status.loading:
-                    return const CircularProgressIndicator();
-                  case Status.loaded:
-                    return Text(controller.data);
-
-                  case Status.error:
-                    return const Text('Ah pasado un error');
-                }
-              },
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // controller.update();
-          context.read<Controller>().update();
-        },
-      ),
+      home: CountryScreen(),
     );
   }
 }
@@ -90,6 +29,7 @@ class HomeScreen extends StatelessWidget {
 // BlocBuilder
 // provider Consumer
 // */
+
 enum Status {
   init,
   loading,
@@ -97,7 +37,12 @@ enum Status {
   error,
 }
 
+final controllerProvider = ChangeNotifierProvider((ref) => Controller());
+
 class Controller extends ChangeNotifier {
+  Controller() {
+    getCharacteristic();
+  }
   Status status = Status.init;
   var counter = 0;
   List<String> characteres = [];
@@ -123,41 +68,3 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-/**
- * 
- * ChangeNotifier
- * ValueNotifier
- * setState
- */
-
-/**
- * 
- * 
- * RxJs
- * 
- * //Oservable Objects
- * Suscription
- * Observable
- * SucriptionBehavior
- * Reactive Programing 
- * Concept Programing 
- * Design Pattern
- *      |
- *     \ /
- *   Oservable Pattern
- * Suscription 
- *      ------>  ObservableObject
- *      ---✅--✅--✅->🙌🏽<-✅--✅-- Suscription
- *                             |- Cancel Suscrption 
- *                                ❌
- * Observable | ---✅--✅--✅->🙌🏽<-✅--✅-- Suscription
- *            | ---✅--✅--✅->🙌🏽<-✅--✅-- Suscription
- *            | ---✅--✅--✅->🙌🏽<-✅--✅-- Suscription
- * 
- * 
- * BehaviorSubject
- *   Like Begin from zero of onces Stream
- */
-
-
