@@ -3,11 +3,6 @@ import 'dart:async';
 import 'package:become_to_flutter_dev/feature/country/domain/controller/country_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final controllerNotifierProvider =
-    AsyncNotifierProvider<ControllerNotifier, String>(
-  ControllerNotifier.new,
-);
-
 class ControllerNotifier extends AsyncNotifier<String> {
   Future<String> getCharacteristic() async =>
       ref.read(CountryController.apiCountry).getCountries();
@@ -17,3 +12,8 @@ class ControllerNotifier extends AsyncNotifier<String> {
     return await getCharacteristic();
   }
 }
+
+final controllerNotifierProvider =
+    AsyncNotifierProvider<ControllerNotifier, String>(
+  ControllerNotifier.new,
+);
